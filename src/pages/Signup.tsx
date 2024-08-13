@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { api, signup } from "../utils/apis/serverAPI";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
 import { useMutation } from "@tanstack/react-query";
@@ -12,21 +11,9 @@ export default function Signup() {
 
   const navigate = useNavigate();
 
-  const { mutate } = useMutation({
-    mutationKey: ["signup"],
-    mutationFn: () => signup({ username: username, password: password }),
-    onSuccess: () => {
-      navigate("/login");
-    },
-    onError: (e) => {
-      console.log("회원가입 에러: ", e);
-    },
-  });
-
   // 회원가입 폼 제출
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    mutate();
   };
 
   return (

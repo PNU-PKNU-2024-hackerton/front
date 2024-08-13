@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
-import { login } from "../utils/apis/serverAPI";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -16,13 +15,6 @@ export default function Login() {
   // 로그인 폼 제출
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    try {
-      const response = await login({username: username, password: password});
-      localStorage.setItem("accessToken", response.headers['authorization'].replace("Bearer ", ""));
-      navigate("/");
-    } catch (e) {
-      console.error(e);
-    }
   };
 
   return (
