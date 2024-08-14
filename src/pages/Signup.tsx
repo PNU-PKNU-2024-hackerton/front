@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
-import { useMutation } from "@tanstack/react-query";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -20,7 +19,7 @@ export default function Signup() {
     <div className="flex h-screen w-screen flex-col">
       <div className="flex h-full w-full items-center justify-center">
         <div className="flex w-[400px] flex-col gap-y-14 rounded-xl border border-gray-300 p-10">
-          <h1 className="text-3xl font-bold">가입하고 같이 들어요!</h1>
+          <h1 className="text-3xl font-bold">환영해요!</h1>
           <form onSubmit={handleSubmit}>
             {/* <div className="mb-6 flex flex-col gap-3">
               <label htmlFor="email">이메일</label>
@@ -34,14 +33,14 @@ export default function Signup() {
               />
             </div> */}
             <div className="mb-6 flex flex-col gap-3">
-              <label htmlFor="username">사용자 이름</label>
+              <label htmlFor="email">이메일</label>
               <input
-                id="username"
+                id="email"
                 type="text"
                 required
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="@"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="email@gallery.com"
                 className="h-8 w-full rounded-lg border px-3 py-5"
               />
             </div>
@@ -80,14 +79,6 @@ export default function Signup() {
             </Button>
           </div>
         </div>
-      </div>
-      <div className="fixed bottom-5 flex w-full justify-center space-x-4 text-sm text-gray-500">
-        <a>© 2024 Groovith</a>
-        <a>소개</a>
-        <a>약관</a>
-        <a>개인정보처리방침</a>
-        <a>쿠키 정책</a>
-        <a>문제 신고</a>
       </div>
     </div>
   );

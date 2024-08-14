@@ -1,13 +1,19 @@
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../layouts/Sidebar";
+import { useEffect, useState } from "react";
+import { useUserStore } from "../utils/store";
+import Landing from "../components/Landing";
+import { Button } from "../components/Button";
 
 export default function Main() {
-  const navigate = useNavigate();
+  const { isAuthenticated } = useUserStore();
 
   return (
-    <div className="flex h-screen w-screen">
+    <div className="flex h-screen w-screen overflow-hidden">
       <Sidebar />
-      <div>body</div>
+      <div className="flex w-full justify-center overflow-y-auto overflow-x-hidden">
+        <Outlet />
+      </div>
     </div>
   );
 }
