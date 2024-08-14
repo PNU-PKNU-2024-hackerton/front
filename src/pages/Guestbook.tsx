@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Copy } from "lucide-react";
 import { Button } from "../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { useExhibitionStore } from "../utils/store";
@@ -45,6 +45,16 @@ export default function Guestbook() {
     // }
   };
 
+  const handleCopy = () => {
+    if (!exhibitionId) return;
+
+    navigator.clipboard
+      .writeText(`http://localhost:5173/exhibition/${exhibitionId}/front`)
+      .then(() => {
+        alert("링크가 복사되었습니다!");
+      });
+  };
+
   return (
     <div className="flex size-full justify-between">
       <Button
@@ -56,9 +66,27 @@ export default function Guestbook() {
       </Button>
       <div className="flex size-full flex-col items-center justify-center gap-8 p-20">
         {submitted ? (
-          <h1 className="text-2xl text-neutral-700">
-            관람해주셔서 감사합니다.
-          </h1>
+          <>
+            <h1 className="text-3xl text-neutral-900">
+              관람해주셔서 감사합니다.
+            </h1>
+            <a className="text-md text-neutral-400">
+              링크로 다른 사람에게 이 전시회를 공유하세요
+            </a>
+            <div className="mt-10 flex items-center gap-5">
+              <a className="font-bold text-neutral-600">전시회 링크</a>
+              <a className="text-neutral-400">
+                http://localhost:5173/exhibition/{exhibitionId}/front
+              </a>
+              <Button
+                className="flex w-fit items-center justify-center gap-1 text-sm"
+                onClick={handleCopy}
+              >
+                <Copy />
+                <a>복사하기</a>
+              </Button>
+            </div>
+          </>
         ) : (
           <div className="flex w-[500px] flex-col">
             <div className="mb-5 flex w-full justify-center text-2xl font-bold text-neutral-900">

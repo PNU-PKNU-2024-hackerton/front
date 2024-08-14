@@ -11,7 +11,7 @@ interface UserStoreType {
 }
 
 export const useUserStore = create<UserStoreType>((set) => ({
-  isAuthenticated: true,
+  isAuthenticated: false,
   setIsAuthenticated: (isAuthenticated: boolean) => set({ isAuthenticated }),
   userId: null,
   setUserId: (userId: number) => set({ userId }),

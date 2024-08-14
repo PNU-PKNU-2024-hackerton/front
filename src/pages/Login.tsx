@@ -19,22 +19,25 @@ export default function Login() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    try {
-      const body = {};
+    setIsAuthenticated(true);
+    navigate("/");
 
-      const response = await axios.post<LoginResponse>(
-        "http://localhost:8080/login",
-        body,
-      );
-      if (response.status === 200) {
-        setIsAuthenticated(true);
-        setUserId(response.data.userId);
-        setUsername(response.data.username);
-      }
-    } catch (e) {
-      console.error("로그인 에러: ", e);
-      navigate("/");
-    }
+    // try {
+    //   const body = {};
+
+    //   const response = await axios.post<LoginResponse>(
+    //     "http://localhost:8080/login",
+    //     body,
+    //   );
+    //   if (response.status === 200) {
+    //     setIsAuthenticated(true);
+    //     setUserId(response.data.userId);
+    //     setUsername(response.data.username);
+    //   }
+    // } catch (e) {
+    //   console.error("로그인 에러: ", e);
+    //   navigate("/");
+    // }
   };
 
   return (

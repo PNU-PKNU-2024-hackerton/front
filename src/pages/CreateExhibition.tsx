@@ -1,11 +1,13 @@
 import { ChangeEvent, useState } from "react";
 import { Button } from "../components/Button";
 import { Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateExhibition() {
   const [name, setName] = useState("");
   const [artist, setArtist] = useState("");
   const [showImages, setShowImages] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   const handleAddImages = (event: ChangeEvent<HTMLInputElement>): void => {
     const imageLists = event.target.files;
@@ -69,7 +71,14 @@ export default function CreateExhibition() {
             ))}
           </div>
           <div className="mb-20 mt-10 w-full">
-            <Button className="rounded-full px-6">전시 만들기</Button>
+            <Button
+              className="rounded-full px-6"
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              전시 만들기
+            </Button>
           </div>
         </div>
       </div>

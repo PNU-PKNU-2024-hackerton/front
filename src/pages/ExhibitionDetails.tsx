@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import { formatDateTime } from "../utils/formatDateTime";
 import { Button } from "../components/Button";
 import { Copy, PlusCircle } from "lucide-react";
+import pic1 from "../assets/pic1.jpg";
+import pic2 from "../assets/pic2.jpg";
+import pic3 from "../assets/pic3.jpg";
+import pic4 from "../assets/pic4.jpg";
+import pic5 from "../assets/pic5.jpg";
 
 export interface ExhibitionDetailsType {
   id: number;
@@ -29,7 +34,7 @@ export interface GuestbookItem {
 
 const mockExhibitionDetails: ExhibitionDetailsType = {
   id: 0,
-  name: "전시 01",
+  name: "The Very Name Of The Exhibition",
   artist: "Salvador Dali",
   createdAt: "2024-08-12T10:15:30",
   paintings: [
@@ -37,37 +42,31 @@ const mockExhibitionDetails: ExhibitionDetailsType = {
       name: "그림 1",
       description: "설명입니다.",
       year: 2024,
-      imageUrl: defaultImg,
+      imageUrl: pic1,
     },
     {
       name: "그림 3",
       description: "설명입니다.",
       year: 2024,
-      imageUrl: defaultImg,
+      imageUrl: pic2,
     },
     {
       name: "그림 4",
       description: "설명입니다.",
       year: 2024,
-      imageUrl: defaultImg,
+      imageUrl: pic3,
     },
     {
       name: "그림 5",
       description: "설명입니다.",
       year: 2024,
-      imageUrl: defaultImg,
+      imageUrl: pic4,
     },
     {
       name: "그림 6",
       description: "설명입니다.",
       year: 2024,
-      imageUrl: defaultImg,
-    },
-    {
-      name: "그림 7",
-      description: "설명입니다.",
-      year: 2024,
-      imageUrl: defaultImg,
+      imageUrl: pic5,
     },
   ],
   guestbook: [
@@ -129,10 +128,10 @@ export default function ExhibitionDetails() {
           <a className="mb-3 text-lg text-neutral-600">
             {exhibitionDetails.artist}
           </a>
-          <a className="mb-3 text-lg text-neutral-600">
+          <a className="mb-10 text-neutral-400">
             {formatDateTime(exhibitionDetails.createdAt)}
           </a>
-          <div className="mb-10 flex gap-10 text-neutral-500">
+          <div className="mb-10 flex gap-10 text-neutral-600">
             <a>총 방문자 수 178,112 명</a>
             <a>좋아요 117</a>
           </div>

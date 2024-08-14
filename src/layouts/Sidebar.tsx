@@ -12,35 +12,35 @@ import { useUserStore } from "../utils/store";
 const mockExhibitionList: ExhibitionType[] = [
   {
     id: 0,
-    name: "전시 01",
+    name: "The Very Name Of The Exhibition",
     createdAt: "2024-08-12T10:15:30",
   },
-  {
-    id: 1,
-    name: "전시 02",
-    createdAt: "2024-07-25T14:23:45",
-  },
-  {
-    id: 2,
-    name: "전시 03",
-    createdAt: "2024-08-01T09:00:00",
-  },
-  {
-    id: 3,
-    name: "전시 04",
-    createdAt: "2024-06-18T17:30:55",
-  },
-  {
-    id: 4,
-    name: "전시 05",
-    createdAt: "2024-08-10T13:45:20",
-  },
+  // {
+  //   id: 1,
+  //   name: "전시 02",
+  //   createdAt: "2024-07-25T14:23:45",
+  // },
+  // {
+  //   id: 2,
+  //   name: "전시 03",
+  //   createdAt: "2024-08-01T09:00:00",
+  // },
+  // {
+  //   id: 3,
+  //   name: "전시 04",
+  //   createdAt: "2024-06-18T17:30:55",
+  // },
+  // {
+  //   id: 4,
+  //   name: "전시 05",
+  //   createdAt: "2024-08-10T13:45:20",
+  // },
 ];
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const [exhibitionList, setExhibitionList] = useState<ExhibitionType[]>();
-  const { isAuthenticated, username } = useUserStore();
+  const { isAuthenticated, username, setIsAuthenticated } = useUserStore();
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -67,6 +67,12 @@ export default function Sidebar() {
     navigate("/exhibition/create");
   };
 
+  // 로그아웃 버튼
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    //navigate("/");
+  };
+
   return (
     <div className="flex h-full w-full max-w-[300px] flex-col items-start justify-start gap-y-10 border-r border-gray-900 px-5 pt-8">
       <a
@@ -79,7 +85,11 @@ export default function Sidebar() {
         {isAuthenticated ? (
           <div className="flex items-center justify-between">
             <a className="font-bold text-neutral-900">IamArtist</a>
-            <Button variant={"ghost"} className="px-1 text-red-600">
+            <Button
+              variant={"ghost"}
+              className="px-1 text-red-600"
+              onClick={handleLogout}
+            >
               로그아웃
             </Button>
           </div>

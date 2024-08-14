@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../components/Button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -9,24 +10,40 @@ export default function Exhibition() {
   const navigate = useNavigate();
   const { paintings } = useExhibitionStore();
 
+  // State to handle the opacity transition
+  const [fadeOut, setFadeOut] = useState(false);
+  const [nextPage, setNextPage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (nextPage) {
+      const timer = setTimeout(() => {
+        navigate(nextPage);
+        setFadeOut(false);
+        setNextPage(null);
+      }, 500); // Match the duration with your CSS transition time
+
+      return () => clearTimeout(timer);
+    }
+  }, [nextPage, navigate]);
+
   const handlePrevious = () => {
     if (!paintingIndex) return;
-    if (paintingIndex === "0") {
-      navigate(`/exhibition/${exhibitionId}/front`);
-    } else {
-      navigate(`/exhibition/${exhibitionId}/${Number(paintingIndex) - 1}`);
-    }
+    setFadeOut(true);
+    setNextPage(
+      paintingIndex === "0"
+        ? `/exhibition/${exhibitionId}/front`
+        : `/exhibition/${exhibitionId}/${Number(paintingIndex) - 1}`,
+    );
   };
 
   const handleNext = () => {
     if (!paintingIndex) return;
-    // 만약 그림이 남았다면 다음 그림으로
-    if (Number(paintingIndex) < paintings.length - 1) {
-      navigate(`/exhibition/${exhibitionId}/${Number(paintingIndex) + 1}`);
-    } else {
-      // 만약 마지막 그림이면 방명록으로
-      navigate(`/exhibition/${exhibitionId}/guestbook`);
-    }
+    setFadeOut(true);
+    setNextPage(
+      Number(paintingIndex) < paintings.length - 1
+        ? `/exhibition/${exhibitionId}/${Number(paintingIndex) + 1}`
+        : `/exhibition/${exhibitionId}/guestbook`,
+    );
   };
 
   return (
@@ -38,19 +55,22 @@ export default function Exhibition() {
       >
         <ChevronLeft size={50} />
       </Button>
-      <div className="flex size-full flex-col items-center justify-center gap-8 p-20">
+      <div
+        className={`flex flex-col items-center justify-center gap-8 p-20 transition-opacity duration-300 ${fadeOut ? "opacity-0" : "opacity-100"}`}
+      >
         <img
-          src={paintings[Number(paintingIndex)].imageUrl}
-          className="object-contain"
+          src={paintings[Number(paintingIndex)]?.imageUrl || defaultImg}
+          className="h-[450px] object-cover"
+          alt={paintings[Number(paintingIndex)]?.name || "Artwork"}
         />
         <h1 className="text-2xl font-bold">
-          {paintings[Number(paintingIndex)].name}
+          {paintings[Number(paintingIndex)]?.name || "Unknown Title"}
         </h1>
         <p className="text-sm text-neutral-600">
-          {paintings[Number(paintingIndex)].description}
+          {paintings[Number(paintingIndex)]?.description || "No Description"}
         </p>
         <a className="text-sm text-neutral-400">
-          {paintings[Number(paintingIndex)].year}
+          {paintings[Number(paintingIndex)]?.year || "Unknown Year"}
         </a>
       </div>
       <Button
