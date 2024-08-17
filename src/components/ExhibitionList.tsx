@@ -1,14 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { formatDateTime } from "../utils/formatDateTime";
+import { ExhibitionType } from "../utils/types";
 
 export interface ExhibitionListProps {
   items: ExhibitionType[] | undefined;
-}
-
-export interface ExhibitionType {
-  id: number;
-  name: string;
-  createdAt: string;
 }
 
 export default function ExhibitionList({ items }: ExhibitionListProps) {
@@ -24,15 +19,22 @@ export default function ExhibitionList({ items }: ExhibitionListProps) {
         items.map((item, index) => (
           <div
             key={index}
-            className="flex w-full flex-col gap-2 rounded-md border-b px-2 py-4 hover:cursor-pointer hover:bg-neutral-200"
+            className="flex w-full items-center gap-2 rounded-md border-b px-2 py-3 hover:cursor-pointer hover:bg-neutral-200"
             onClick={() => {
               handleItemClick(item.id);
             }}
           >
-            <a className="text-lg">{item.name}</a>
-            <a className="text-sm text-neutral-400">
-              {formatDateTime(item.createdAt)}
-            </a>
+            <img
+              src={item.thumbnailUrl}
+              alt={item.name}
+              className="h-14 w-10 rounded-md object-cover"
+            />
+            <div className="flex flex-col gap-2">
+              <a className="text-lg">{item.name}</a>
+              <a className="text-sm text-neutral-400">
+                {new Date(item.createdAt).toLocaleDateString()}
+              </a>
+            </div>
           </div>
         ))}
     </div>

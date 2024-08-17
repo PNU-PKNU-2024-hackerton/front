@@ -1,45 +1,66 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
-import { Menu, PlusCircle, X } from "lucide-react";
+import {
+  ChevronDown,
+  EllipsisVertical,
+  LogOut,
+  Menu,
+  Plus,
+  PlusCircle,
+  Settings,
+  X,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import ExhibitionList, {
   ExhibitionListProps,
-  ExhibitionType,
 } from "../components/ExhibitionList";
 import axios from "axios";
 import { useUserStore } from "../utils/store";
+import defaultImg from "../assets/default-user-image.png";
+import DropdownButton from "../components/DropdownButton";
+import { ExhibitionType } from "../utils/types";
 
-const mockExhibitionList: ExhibitionType[] = [
+const mockExhibitions: ExhibitionType[] = [
   {
-    id: 0,
-    name: "The Very Name Of The Exhibition",
-    createdAt: "2024-08-12T10:15:30",
+    id: 1,
+    name: "Modern Art Exhibition",
+    thumbnailUrl:
+      "https://i.pinimg.com/564x/06/50/cf/0650cfc55a5efa2a27bf3024c6184e69.jpg",
+    createdAt: "2023-08-01T10:30:00Z",
   },
-  // {
-  //   id: 1,
-  //   name: "전시 02",
-  //   createdAt: "2024-07-25T14:23:45",
-  // },
-  // {
-  //   id: 2,
-  //   name: "전시 03",
-  //   createdAt: "2024-08-01T09:00:00",
-  // },
-  // {
-  //   id: 3,
-  //   name: "전시 04",
-  //   createdAt: "2024-06-18T17:30:55",
-  // },
-  // {
-  //   id: 4,
-  //   name: "전시 05",
-  //   createdAt: "2024-08-10T13:45:20",
-  // },
+  {
+    id: 2,
+    name: "Photography Wonders",
+    thumbnailUrl:
+      "https://i.pinimg.com/564x/08/26/da/0826da75d4feac9d41ce64754008cda7.jpg",
+    createdAt: "2023-07-20T14:45:00Z",
+  },
+  {
+    id: 3,
+    name: "Sculpture Masterpieces",
+    thumbnailUrl:
+      "https://i.pinimg.com/564x/1a/93/7c/1a937c702c1f80c3f73f8188db18ee20.jpg",
+    createdAt: "2023-06-15T09:15:00Z",
+  },
+  {
+    id: 4,
+    name: "Impressionist Collection",
+    thumbnailUrl:
+      "https://i.pinimg.com/564x/07/fd/eb/07fdeb7e11043b1186fb7ddadd3c050e.jpg",
+    createdAt: "2023-05-30T16:20:00Z",
+  },
+  {
+    id: 5,
+    name: "Abstract Art Showcase",
+    thumbnailUrl:
+      "https://i.pinimg.com/564x/23/7c/ee/237ceed7146eccac189ccedd69d6e3de.jpg",
+    createdAt: "2023-05-10T12:00:00Z",
+  },
 ];
 
 export default function Sidebar() {
   const navigate = useNavigate();
-  const [exhibitionList, setExhibitionList] = useState<ExhibitionType[]>();
+  const [exhibitions, setExhibitions] = useState<ExhibitionType[]>();
   const { isAuthenticated, username, setIsAuthenticated } = useUserStore();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -49,13 +70,14 @@ export default function Sidebar() {
     const fetchExhibitionList = async () => {
       try {
         const response = await axios.get<ExhibitionListProps>("/url");
-        setExhibitionList(response.data.items);
+        setExhibitions(response.data.items);
       } catch (e) {
         console.error("전시회 목록 조회 실패: ", e);
       }
     };
 
-    fetchExhibitionList();
+    //fetchExhibitionList();
+    setExhibitions(mockExhibitions);
   }, [isAuthenticated]);
 
   // 로그인 페이지
@@ -75,7 +97,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full text-neutral-900">
       <div className="absolute p-2 lg:hidden">
         <Button
           variant={"ghost"}
@@ -87,15 +109,9 @@ export default function Sidebar() {
       <aside
         className={`${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } fixed left-0 top-0 z-50 flex h-full w-full max-w-[300px] flex-col items-start justify-start gap-y-10 border-r border-gray-900 bg-white px-5 pt-8 transition-transform duration-300 ease-in-out lg:static lg:translate-x-0`}
+        } fixed left-0 top-0 z-50 flex h-full w-full max-w-[300px] flex-col items-start justify-start border-r border-gray-900 bg-white px-2 pt-2 transition-transform duration-300 ease-in-out lg:static lg:translate-x-0`}
       >
-        <div className="flex w-full items-center justify-between">
-          <a
-            className="text-2xl hover:cursor-pointer"
-            onClick={() => navigate("/")}
-          >
-            LLERY
-          </a>
+        <div className="mb-5 flex w-full items-center justify-between">
           <Button
             className="lg:hidden"
             variant={"ghost"}
@@ -103,19 +119,68 @@ export default function Sidebar() {
           >
             <X />
           </Button>
+          <a
+            className="p-2 text-2xl hover:cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            MALLERY
+          </a>
         </div>
-        <div className="w-full">
+        <div className="flex w-full flex-col">
           {isAuthenticated ? (
-            <div className="flex items-center justify-between">
-              <a className="font-bold text-neutral-900">IamArtist</a>
-              <Button
-                variant={"ghost"}
-                className="px-1 text-red-600"
-                onClick={handleLogout}
-              >
-                로그아웃
-              </Button>
-            </div>
+            <>
+              <div className="mb-10 flex items-center justify-between">
+                <DropdownButton
+                  items={[
+                    { label: "설정", action: () => {}, Icon: Settings },
+                    {
+                      label: "로그아웃",
+                      action: () => {
+                        handleLogout();
+                      },
+                      Icon: LogOut,
+                    },
+                  ]}
+                >
+                  <Button
+                    variant={"ghost"}
+                    className="flex max-w-full items-center justify-between rounded-full border border-neutral-500 px-3 text-neutral-900"
+                    onClick={() => {}}
+                  >
+                    <img
+                      src={defaultImg}
+                      alt="profile_picture"
+                      className="mr-3 size-6 object-contain"
+                    />
+                    <a className="mr-3 size-fit min-w-0 max-w-full items-center overflow-hidden text-ellipsis whitespace-nowrap">
+                      username
+                    </a>
+                    <ChevronDown />
+                  </Button>
+                </DropdownButton>
+              </div>
+              <div className="px-2">
+                <div className="mb-5 flex items-center justify-between">
+                  <a
+                    className="font-bold hover:cursor-pointer hover:underline hover:underline-offset-4"
+                    onClick={() => {
+                      navigate("/");
+                    }}
+                  >
+                    내 전시 ▸
+                  </a>
+                  <Button
+                    variant={"transparent"}
+                    className="flex items-center p-0"
+                    onClick={handleCreateClick}
+                  >
+                    <a className="mr-2">새 전시</a>
+                    <Plus />
+                  </Button>
+                </div>
+                <ExhibitionList items={exhibitions} />
+              </div>
+            </>
           ) : (
             <Button
               variant={"default"}
@@ -126,25 +191,6 @@ export default function Sidebar() {
             </Button>
           )}
         </div>
-        <div className="flex w-full flex-col">
-          <div className="flex items-center justify-between">
-            <a className="font-bold">내 전시</a>
-            <Button
-              variant={"transparent"}
-              className="p-0"
-              onClick={handleCreateClick}
-            >
-              <PlusCircle />
-            </Button>
-          </div>
-        </div>
-        {isAuthenticated ? (
-          <ExhibitionList items={mockExhibitionList} />
-        ) : (
-          <div className="flex size-full items-center justify-center">
-            <a className="text-neutral-400">로그인이 필요합니다</a>
-          </div>
-        )}
       </aside>
     </div>
   );
